@@ -1,0 +1,82 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Dokumentasi Perpustakaan",
+        "description": "Dokumentasi API untuk sistem peminjaman buku",
+        "contact": {
+            "name": "Tim Developer",
+            "email": "admin@wedeh.my.id"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/pinjaman/toggle/{buku_id}": {
+            "post": {
+                "tags": [
+                    "Pinjaman"
+                ],
+                "summary": "Pinjam buku dan kirim email notifikasi",
+                "description": "Jika buku belum dipinjam, sistem akan mencatat peminjaman dan mengirim email notifikasi ke user. Jika sudah dipinjam, dokumentasi ini tidak mencakup aksi pengembalian.",
+                "operationId": "6383beee0a687ec5b036043da1e8bd37",
+                "parameters": [
+                    {
+                        "name": "buku_id",
+                        "in": "path",
+                        "description": "ID buku yang ingin dipinjam",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Buku berhasil dipinjam dan email notifikasi dikirim",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Buku berhasil dipinjam! Email notifikasi dikirim."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Buku tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Pinjaman",
+            "description": "Pinjaman"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
+        }
+    ]
+}

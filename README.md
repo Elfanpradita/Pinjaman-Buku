@@ -1,1 +1,1 @@
-# Persiapan UAS ajaaaa
+# OK

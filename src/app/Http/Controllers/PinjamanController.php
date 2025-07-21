@@ -6,6 +6,8 @@ use App\Models\Buku;
 use App\Models\Pinjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\PinjamBukuMail;
+use Illuminate\Support\Facades\Mail;
 
 class PinjamanController extends Controller
 {
@@ -31,6 +33,9 @@ class PinjamanController extends Controller
                 'tanggal_pinjam' => now(),
                 'tanggal_kembali' => null,
             ]);
+
+            // ✅ Kirim email notifikasi
+            Mail::to(Auth::user()->email)->send(new PinjamBukuMail($buku));
 
             return back()->with('success', 'Buku berhasil dipinjam!');
         }

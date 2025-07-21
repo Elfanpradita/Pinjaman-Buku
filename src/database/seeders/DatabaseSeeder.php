@@ -3,23 +3,37 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        /* ——— A. Pastikan role super_admin ada ——— */
+        Role::firstOrCreate(['name' => 'super_admin']);
 
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-        ]);
+        /* ——— B. Buat / ambil user admin ——— */
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name'     => 'Admin',
+                'password' => bcrypt('password'),   // ganti kalau mau
+            ]
+        );
 
-        $user->assignRole('super_admin');
-    }
+        /* ——— C. Assign role super_admin bila belum ——— */
+        if (! $admin->hasRole('super_admin')) {
+            $admin->assignRole('super_admin');
+        }
+
+        /* ——— D. Jalankan RoleSeeder & seeder lain ——— */
+    $this->call([
+            CompanySeeder::class,
+            PenjagaSeeder::class,
+            BukuSeeder::class,
+            PinjamanSeeder::class,
+    ]);
+}
+
 }
